@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="Zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>jiliguala</title>
+    <style>
+      .flexrow {
+        display: flex;
+        flex-direction: row;
+      }
+      .flex {
+        display: flex;
+        justify-content: center;
+      }
+      .flexaround {
+        display: flex;
+        justify-content: space-around;
+      }
+      body {
+        margin: 0;
+        height: 100vh;
+        background-color: gray;
+      }
+
+      .bodybox {
+        display: flex;
+        flex-direction: column;
+      }
+      .explain {
+        background-color: white;
+      }
+      .code {
+        flex: 90;
+        display: flex;
+        flex-direction: row;
+      }
+      .jiamiqu {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: antiquewhite;
+      }
+      .jiemiqu {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .input,
+      .output {
+        flex: 45;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .zhongjianqu {
+        flex: 10;
+        display: flex;
+        flex-direction: row;
+
+        justify-content: space-around;
+        align-items: center;
+      }
+      .explain01 {
+        flex: 10;
+        display: flex;
+      }
+      .button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .inputfield {
+        flex: 1;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+
+        padding: 10px;
+        margin: 10px;
+        border-radius: 5px;
+        border: none;
+        font-size: 16px;
+        width: 80%;
+        height: 80%;
+      }
+      .outputfield {
+        flex: 1;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 10px;
+        margin: 10px;
+        border-radius: 5px;
+        border: none;
+        font-size: 16px;
+        width: 80%;
+        height: 80%;
+      }
+    </style>
+  </head>
+  <body class="bodybox">
+    <div style="height: 200px" class="explain">
+      <!--说明部分-->
+      <h style="font-size: 30px" class="flex"><b>人机编译器</b></h>
+      <p
+        style="
+          font-size: 20px;
+          display: flex;
+          align-items: center;
+          padding: 3px;
+        "
+      >
+        这是第一个设计的网页用于进行密码加密解密的小东西，内容创意均有所借鉴学习，这个原理很简单，相信聪明的你一定知道，安全与保密性设计者不负责任，仅供学习娱乐。
+      </p>
+      <div class="flexaround" style="font-size: 20px">
+        <p>加密区</p>
+        <p>解密区</p>
+      </div>
+    </div>
+    <div class="code">
+      <!---密码区-->
+      <div class="jiamiqu">
+        <!--加密区-->
+        <div class="input">
+          <!--输入文字区域-->
+          <textarea
+            type="text"
+            class="inputfield"
+            id="inputJiamiqian"
+            placeholder="请输入需要加密的文字"
+          ></textarea>
+        </div>
+        <div class="zhongjianqu">
+          <!---中间区域-->
+          <button class="button" id="jiamibutton">加密</button>
+          <button class="button" id="jiamicopy">复制</button>
+        </div>
+
+        <div class="output">
+          <!--输出文字区域-->
+          <textarea
+            type="text"
+            class="outputfield"
+            id="outputJiamihou"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="jiemiqu">
+        <!--解密区-->
+        <div class="input">
+          <!--输入文字区域-->
+          <textarea
+            type="text"
+            class="inputfield"
+            id="inputJiemiqian"
+            placeholder="请输入需要解密的文字"
+          ></textarea>
+        </div>
+        <div class="zhongjianqu">
+          <!---中间区域-->
+          <button class="button" id="jiemibutton">解密</button>
+          <button class="button" id="jiemicopy">复制</button>
+        </div>
+        <div class="output">
+          <!--输出文字区域-->
+          <textarea
+            type="text"
+            class="outputfield"
+            id="outputJiemihou"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="explain explain01 flex">
+      <p class="flex" style="font-size: 20px"><b> by 比哈特略路 </b></p>
+    </div>
+    <script>
+      const inputJiamiqian = document.getElementById("inputJiamiqian");
+      const inputjiemiqian = document.getElementById("inputJiemiqian");
+      //加密函数
+      function jiamifunction() {
+        return Array.from(inputJiamiqian.value)
+          .map((char) => {
+            return char.charCodeAt(0).toString(2).padStart(16, "0");
+          })
+          .join("")
+          .replaceAll("0", "人")
+          .replaceAll("1", "机");
+      }
+
+      //解密函数
+      function jiemifunction() {
+        let binary = inputjiemiqian.value
+          .replace(/[^人机]/g, "")
+          .replaceAll("人", "0")
+          .replaceAll("机", "1");
+        let binaryArray = binary.match(/.{1,16}/g);
+        return binaryArray
+          .map((bin) => {
+            return String.fromCharCode(parseInt(bin, 2));
+          })
+          .join("");
+      }
+
+      const jiamibutton = document.getElementById("jiamibutton");
+      const outputField = document.getElementById("outputJiamihou");
+
+      jiamibutton.addEventListener("click", function () {
+        outputField.value = jiamifunction();
+      });
+      const jiemibutton = document.getElementById("jiemibutton");
+      const outputField2 = document.getElementById("outputJiemihou");
+      jiemibutton.addEventListener("click", function () {
+        outputField2.value = jiemifunction();
+      });
+    </script>
+  </body>
+</html>
+
+num = pars
